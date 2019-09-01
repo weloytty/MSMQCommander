@@ -8,28 +8,51 @@ namespace MsmqLib
     {
         public static string GetMessageBodyAsString(this Message message)
         {
-            var encoding = new UTF8Encoding();
+            UTF8Encoding encoding = new UTF8Encoding();
             return encoding.GetString(GetStreamAsByteArray(message.BodyStream), 0, (int)message.BodyStream.Length);
         }
+
+
+        public static string GetMessageBodyAsUnicodeString(this Message message)
+        {
+            UnicodeEncoding encoding = new UnicodeEncoding();
+            return encoding.GetString(GetStreamAsByteArray(message.BodyStream), 0, (int)message.BodyStream.Length);
+        }
+
+        public static string GetMessageBodyWithEncoding(this Message message, Encoding encodingToUse)
+        {
+            if (encodingToUse == null) { encodingToUse = Encoding.Unicode; }
+            return encodingToUse.GetString(GetStreamAsByteArray(message.BodyStream), 0, (int)message.BodyStream.Length);
+        }
+
 
         public static byte[] GetStreamAsByteArray(Stream stream)
         {
             stream.Position = 0;
-            var streamAsByteArray = new byte[stream.Length];
+            byte[] streamAsByteArray = new byte[stream.Length];
             stream.Read(streamAsByteArray, 0, (int)stream.Length);
             return streamAsByteArray;
         }
 
         public static string GetExtensionDataAsString(this Message message)
         {
-            var encoding = new UTF8Encoding();
+            UTF8Encoding encoding = new UTF8Encoding();
             return encoding.GetString(message.Extension, 0, message.Extension.Length);
         }
+
+
+        public static string GetExtensionDataAsUnicodeString(this Message message)
+        {
+            UnicodeEncoding encoding = new UnicodeEncoding();
+            return encoding.GetString(message.Extension, 0, message.Extension.Length);
+        }
+
+
 
         public static byte[] GetBodyAsByteArray(this Message message)
         {
             message.BodyStream.Position = 0;
-            var bodyAsByteArray = new byte[message.BodyStream.Length];
+            byte[] bodyAsByteArray = new byte[message.BodyStream.Length];
             message.BodyStream.Read(bodyAsByteArray, 0, (int)message.BodyStream.Length);
             return bodyAsByteArray;
         }

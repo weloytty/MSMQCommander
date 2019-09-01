@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Messaging;
+using System.Text;
 using Caliburn.Micro;
 using MSMQCommander.Contex;
 using MSMQCommander.Events;
@@ -17,6 +18,7 @@ namespace MSMQCommander.ViewModels
         private readonly IQueueService _queueService;
         private readonly MessageQueue _messageQueue;
         private Message _message;
+        private Encoding _bodyEncoding;
 
         public MessageDetailsViewModel(CurrentSelectedQueueContext currentSelectedQueueContext, IEventAggregator eventAggregator, IQueueService queueService)
         {
@@ -60,6 +62,10 @@ namespace MSMQCommander.ViewModels
             }
         }
 
+        public Encoding BodyEncoding {
+            get { return _bodyEncoding; }
+        }
+
         public string Body
         {
             get
@@ -67,7 +73,8 @@ namespace MSMQCommander.ViewModels
                 if (_message == null)
                     return string.Empty;
 
-                return _message.GetMessageBodyAsString();
+
+                return _message.GetMessageBodyWithEncoding(_bodyEncoding ?? Encoding.Unicode);
             }
         }
 
@@ -254,7 +261,7 @@ namespace MSMQCommander.ViewModels
                 if (_message == null)
                     return string.Empty;
 
-                return _message.GetExtensionDataAsString();
+                return _message.GetExtensionDataAsUnicodeString();
             }
         }
     }

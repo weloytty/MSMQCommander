@@ -319,7 +319,7 @@ namespace MsmqLib
             try
             {
                 var message = GetFullMessage(messageQueue, messageId);
-                var messageBodyString = message.GetMessageBodyAsString();
+                var messageBodyString = message.GetMessageBodyAsUnicodeString();
                 var reader = new StreamReader(message.BodyStream);
                 using (var fileStream = new FileStream(fileName, FileMode.Create))
                 {

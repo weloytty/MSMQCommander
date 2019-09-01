@@ -5,6 +5,8 @@
         public MessageDetailsView()
         {
             InitializeComponent();
+
+          
         }
     }
 }
